@@ -1,31 +1,48 @@
 .App-card {
   max-width: 600px;
-  margin: 40px auto;
+  margin: 5vh auto;
   box-shadow: 0px 8px 16px 0px #55555566;
 }
 
-.button {
-  height: 70px;
-  width: 315px;
-  border-radius: 28px;
-  font-size: 20px;
+.flex_card {
+  background-size: 800px;
+  background-repeat: no-repeat;
+  height: 90vh;
   display: flex;
-  vertical-align: middle;
+  flex-direction: column;
   justify-content: space-between;
-  cursor: pointer;
 }
 
-.white-button {
-  border: 1px solid #2743FD;
-  color: #2743FD;
+.flex_row_center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-.blue-button {
-  background-color: #2743FD;
+.flex_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
+  gap: 20px;
+}
+
+.index_title {
+  padding-top: 160px;
+  padding-left: 40px;
+  font-size: 28px;
   color: white;
-  box-shadow: 0px 8px 16px 0px #1b39ff33;
 }
 
+.page_title {
+  font-size: 28px;
+  font-weight: bold;
+  align-self: start;
+}
+
+input, textarea, button{
+  font-family:inherit;
+}
 
 /* 
 .App {
