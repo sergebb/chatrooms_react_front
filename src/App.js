@@ -8,6 +8,7 @@ import {
 
 import './App.css';
 import { Index } from './pages/index'
+import { Singup } from './pages/singup'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/signup" element={<Singup />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </Router>

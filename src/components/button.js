@@ -1,4 +1,6 @@
 import React from 'react'
+
+import './button.css'
 import blue_bg from '../images/blue_bg.svg';
 import blue_arrow from '../images/right_arrow_blue.svg';
 import white_arrow from '../images/right_arrow_white.svg';
@@ -46,5 +48,16 @@ export function WhiteButton(props) {
                 <Button text={props.text} icon={blue_arrow} />
             </div>
         </a>
+    )
+}
+
+export function CornerBackButton(props) {
+    return (
+            <a onClick={props.onClick} className='flex_content corner-button'>
+                <img src={white_arrow} style={{
+                    transform: 'rotate(180deg)',
+                    margin: 'auto'
+                }} />
+            </a>
     )
 }
