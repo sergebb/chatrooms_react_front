@@ -1,0 +1,25 @@
+.chat-content {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #DEE1EF;
+    width: 460px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.chat-title {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.chat-message {
+    font-size: 14px;
+    color: #2743FD;
+}
+
+.chat-user {
+    font-style: italic;
+    font-size: 14px;
+    color: #2743FD;
+}

@@ -53,11 +53,22 @@ export function WhiteButton(props) {
 
 export function CornerBackButton(props) {
     return (
-            <a onClick={props.onClick} className='flex_content corner-button'>
+            <a onClick={props.onClick} className='flex corner-button'>
                 <img src={white_arrow} style={{
                     transform: 'rotate(180deg)',
                     margin: 'auto'
                 }} />
+            </a>
+    )
+}
+
+export function CornerMeButton(props) {
+    return (
+            <a onClick={props.onClick} className='flex corner-button'>
+                <div style={{
+                    color: 'white',
+                    margin: 'auto'
+                }}>Me</div>
             </a>
     )
 }

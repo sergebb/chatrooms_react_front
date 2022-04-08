@@ -2,42 +2,68 @@
   max-width: 600px;
   margin: 5vh auto;
   box-shadow: 0px 8px 16px 0px #55555566;
-}
-
-.flex_card {
   background-size: 800px;
   background-repeat: no-repeat;
   height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
-.flex_row_center {
+.flex {
   display: flex;
+}
+
+.flex-row {
   flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.justify-center {
   justify-content: center;
 }
 
-.flex_content {
-  display: flex;
-  flex-direction: column;
+.align-center {
   align-items: center;
-  margin: 40px auto;
+}
+
+.margin-40 {
+  margin: 40px;
+}
+
+.margin-auto {
+  margin: auto;
+}
+
+.gap-20 {
   gap: 20px;
 }
 
-.index_title {
+.text-blue {
+  color: #2B47FC
+}
+
+
+.index-title {
   padding-top: 160px;
   padding-left: 40px;
   font-size: 28px;
   color: white;
 }
 
-.page_title {
+.page-title {
   font-size: 28px;
   font-weight: bold;
-  align-self: start;
+}
+
+.margin-background {
+  margin-top: 180px;
 }
 
 input, textarea, button{

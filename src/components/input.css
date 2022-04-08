@@ -1,0 +1,30 @@
+.input-title {
+    color: #B9B9B9;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.input-content {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #5D72FD;
+    width: 400px;
+}
+
+.input-text {
+    flex-grow: 1;
+    border: none;
+    padding: 5px;
+    outline: none;
+    font-size: 14px;
+}
+
+.input-err {
+    padding: 5px;
+    font-size: 13px;
+}
+
+.err-color {
+    color: #FD2727;
+    border-color: #FD2727;
+}
