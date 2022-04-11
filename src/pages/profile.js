@@ -11,7 +11,7 @@ import { removeToken } from '../utils/auth';
 
 
 export function Profile() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({email: '', username: ''});
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
 
@@ -20,7 +20,6 @@ export function Profile() {
     const fetchData = () => {
         authGet('users/me')
         .then((data) => {
-          console.log(data)
           setIsLoading(false);
           setData(data);
         })

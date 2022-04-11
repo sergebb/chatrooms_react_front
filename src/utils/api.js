@@ -28,7 +28,6 @@ export function sendDelete(customUrl, params = {}) {
     headers: generateHeader(),
     body: JSON.stringify(params)
   })
-    .then(response => response.json())
     .then(
       (result) => {
         return result;

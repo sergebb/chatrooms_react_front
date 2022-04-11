@@ -70,7 +70,6 @@ export function Singup() {
                 if (res.id) {
                     authPost("token/login", { "username": username, "password": password })
                         .then((login_res) => {
-                            console.log('login_res', login_res)
                             saveToken(login_res);
                             navigate("/");
                         })

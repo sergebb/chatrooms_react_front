@@ -53,7 +53,9 @@ export function Chatrooms() {
                         {isError && <div>Error fetching data.</div>}
                         {rooms && rooms.map((item, index) => (
                             <div key={index}>
-                                <ChatDesc title={item.name} user='User' message='message' onClick={() => navigate('room/' + item.id)} />
+                                <ChatDesc title={item.name} onClick={() => navigate('room/' + item.id)}
+                                    user={item.last_message && item.last_message.user} 
+                                    message={item.last_message && item.last_message.text}   />
                             </div>
                         ))}
                     </div>

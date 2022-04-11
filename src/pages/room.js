@@ -1,33 +1,104 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { sendGet } from '../utils/api';
+import { sendGet, sendPost, sendDelete } from '../utils/api';
 
 import { CornerBackButton } from '../components/button';
-import white_arrow from '../images/right_arrow_white.svg';
+import { NewMessageInput } from '../components/new_message';
 
 
 export function Room() {
     let { roomId } = useParams();
 
+    const [roomName, setRoomName] = useState("");
     const [messages, setMessages] = useState([]);
+    const [lastMessage, setLastMessage] = useState(0);
+    const [newMessage, setNewMessage] = useState("");
     const [isError, setIsError] = useState(false);
 
     const navigate = useNavigate();
 
-    const fetchData = () => {
-        sendGet(`chatroom/${roomId}}/messages`)
+    const getName = () => {
+        sendGet(`chatroom/${roomId}`)
         .then((data) => {
-            setMessages(data);
+            setRoomName(data.name);
         })
         .catch((error) => {
             setIsError(true);
             console.log(error);
         });
-    };
+    }
+
+    const getMessages = () => {
+        sendGet(`chatroom/${roomId}/messages`)
+        .then((data) => {
+            if (data.length) {
+                setMessages(data);
+                setLastMessage(data[data.length - 1].id)
+            }
+        })
+        .catch((error) => {
+            setIsError(true);
+            console.log(error);
+        });
+    }
+
+    const enterRoom = () => {
+        sendPost(`chatroom/${roomId}/users`)
+        .then((data) => {       
+            getMessages();
+        })
+        .catch((error) => {
+            setIsError(true);
+            console.log(error);
+        });
+    }
+
+    const leaveRoom = () => {
+        sendDelete(`chatroom/${roomId}/users`)
+        .catch((error) => {
+            setIsError(true);
+            console.log(error);
+        });
+
+        navigate('/');
+    }
+
+    const sendMessage = (event) => {
+        let trimMessage = newMessage.replace('/[\r\n\x0B\x0C\u0085\u2028\u2029]+/g', " ").trim();
+        if (trimMessage.length === 0) {
+            return;
+        }
+        sendPost(`chatroom/${roomId}/messages`, {text: trimMessage})
+        .then(() => updateMessages())
+        .catch((error) => {
+            setIsError(true);
+            console.log(error);
+        });
+
+        setNewMessage('')
+        event.target.value = ''
+    }
+
+    const updateMessages = () => {
+        sendGet(`chatroom/${roomId}/messages` + '?lastMessage=' + lastMessage)
+        .then((data) => {
+            if (data) {
+                setMessages(messages.concat(data));
+                setLastMessage(data[data.length - 1].id)
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
 
     useEffect(() => {
-      fetchData();
+        getName();
+        enterRoom();
+
+        const interval = setInterval(() => updateMessages(), 2000);
+        return () => clearInterval(interval);
     }, []);
 
     return (
@@ -35,57 +106,32 @@ export function Room() {
             <div className='flex flex-row align-center' style={{
                 width: '100%',
             }}>
-                <div className='flex flex-grow page-title margin-40' >Room</div>
-                <CornerBackButton onClick={() => navigate('/')}/>
+                <div className='flex flex-grow page-title margin-40' >{roomName}</div>
+                <CornerBackButton onClick={leaveRoom}/>
             </div>
 
-            <div className='flex flex-column flex-grow gap-20' style={{
+            <div className='flex flex-column gap-20' style={{
                 width: 540,
-                marginBottom: 30
+                marginBottom: 30,
+                height: 710
             }}>
                 <div className='flex flex-column flex-grow' style={{
                     background: '#F5F6FA',
                     borderRadius: 16,
-                    width: '100%'
+                    padding: 16,
+                    lineHeight: 1.5,
+                    overflowY: 'auto',
                 }}>
-
+                    {isError && <div>Error fetching data.</div>}
+                    {!messages.length && <div style={{color: 'gray'}}>You can be first here!</div>}
+                    {messages && messages.map((item, index) => (
+                        <div key={index}>
+                            <span style={{fontWeight: 'bold'}}>{item.user}</span>: {item.text}
+                        </div>
+                    ))}
                 </div>
 
-                <div className='flex flex-row align-center' style={{
-                    background: '#F5F6FA',
-                    borderRadius: 16,
-                    width: '100%'
-                }}>
-
-
-                    <textarea className='flex flex-grow ' rows="1" type='text' maxlength="500" placeholder="New message" style={{
-                        border: 'none',
-                        background: 'transparent',
-                        paddingLeft: '20px',
-                        paddingRight: '40px',
-                        overflow: 'auto',
-                        outline: 'none',
-                        fontSize: 14,
-                        lineHeight: 1.5,
-                        maxWidth: '90%',
-                        wordWrap: 'break-word',
-                        wordBreak: 'break-all',
-                        minHeight: '20px',
-                        maxHeight: '200px'
-                    }} />
-                    <div className='flex corner-button' style={{
-                        height: 28,
-                        width: 28,
-                        borderRadius: 14,
-                        margin: 14,
-                        cursor: 'pointer',
-                        background: 'linear-gradient(to right, #455CFA, #1433FF)'
-                    }}>
-                        <img src={white_arrow} style={{
-                            margin: 'auto'
-                        }} />
-                    </div>
-                </div>
+                <NewMessageInput onEnter={sendMessage} onChange={(event) => setNewMessage(event.target.value)} />
             </div>
 
         </div>

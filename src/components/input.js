@@ -36,7 +36,6 @@ export const LoginInput = (props) => {
                     readOnly={props.readonly}
                     onChange={props.onChange}
                     onKeyDown={handleKeyDown}
-                    defaultValue={props.text}
                     value={props.password ? values.text : props.text} />
                 <img alt='show' 
                     src={ values.showPassword ? eye_close : eye }

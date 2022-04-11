@@ -11,7 +11,7 @@ export const ChatDesc = (props) => {
             <div className='flex-grow'>
                 <div className='chat-title'>{props.title}</div>
                 <div >
-                    <span className='chat-user'>{props.user}: </span>
+                    <span className='chat-user'>{props.user && props.user + ': '}</span>
                     <span className='chat-message'>{props.message}</span>
                 </div>
             </div>
