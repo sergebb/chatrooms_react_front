@@ -7,7 +7,7 @@ export function saveToken(token) {
 export function getToken() {
     const token = localStorage.getItem("token");
     if (token && token !== 'undefined') {
-        return JSON.parse(token).auth_token;
+        return JSON.parse(token).access_token;
     }
     return;
 };
@@ -35,5 +35,5 @@ export function authHeader() {
     if (!getToken()) {
         return;
     }
-    return { Authorization: 'Token  ' + getToken() };
+    return { Authorization: 'Bearer ' + getToken() };
 }

@@ -18,7 +18,7 @@ export function Profile() {
     const navigate = useNavigate();
 
     const fetchData = () => {
-        authGet('users/me')
+        authGet('users/me/')
         .then((data) => {
           setIsLoading(false);
           setData(data);
@@ -39,12 +39,8 @@ export function Profile() {
     }
 
     const tryLogout = () => {
-        authPost('token/logout')
-        .then((data) => {
-            removeToken();
-            navigate('/');
-        })
-        .catch(err => { console.log(err) })
+        removeToken();
+        navigate('/');
     };
 
     return (

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { CornerBackButton, BlueButton } from '../components/button';
 import { LoginInput } from '../components/input';
 
-import { authPost } from '../utils/api';
+import { authPost, authForm } from '../utils/api';
 import { saveToken } from '../utils/auth';
 
 import content_bg from '../images/content_bg.svg';
@@ -68,7 +68,7 @@ export function Singup() {
         })
             .then(res => {
                 if (res.id) {
-                    authPost("token/login", { "username": username, "password": password })
+                    authForm("token/login", { "username": username, "password": password })
                         .then((login_res) => {
                             saveToken(login_res);
                             navigate("/");

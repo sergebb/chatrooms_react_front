@@ -54,21 +54,38 @@ export function sendPost(customUrl, params, skipContent = false ) {
     );
 }
 
+export function authForm(customUrl, params) {
+  let url_params = new URLSearchParams(params)
+  return fetch(API_URL_AUTH + customUrl, {
+    method: 'POST',
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: url_params
+  })
+    .then(response => response.json())
+    .then(
+      (result) => {
+        return result;
+      })
+    .catch(
+      (error) => console.log(error)
+    );
+}
+
 export function authPost(customUrl, params) {
-    return fetch(API_URL_AUTH + customUrl, {
-      method: 'POST',    
-      headers: generateHeader(),
-      body: JSON.stringify(params) 
-    })
-      .then(response => response.json())
-      .then(
-        (result) => {
-          return result;
-        })
-      .catch(
-        (error) => console.log(error)
-      );
-  }
+  return fetch(API_URL_AUTH + customUrl, {
+    method: 'POST',    
+    headers: generateHeader(),
+    body: JSON.stringify(params) 
+  })
+    .then(response => response.json())
+    .then(
+      (result) => {
+        return result;
+      })
+    .catch(
+      (error) => console.log(error)
+    );
+}
 
 export function authGet(customUrl) {
     return fetch(API_URL_AUTH + customUrl, {
