@@ -1,66 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { sendGet, sendPost, sendDelete } from '../utils/api';
+import { connectWebsocket } from '../utils/api';
 
 import { CornerBackButton } from '../components/button';
 import { NewMessageInput } from '../components/new_message';
 
 
 export function Room() {
-    let { roomId } = useParams();
+    let { roomName } = useParams();
 
-    const [roomName, setRoomName] = useState("");
     const [messages, setMessages] = useState([]);
-    const [lastMessage, setLastMessage] = useState(0);
+    const [webscoket, setWebsocket] = useState();
     const [newMessage, setNewMessage] = useState("");
-    const [isError, setIsError] = useState(false);
-
     const navigate = useNavigate();
 
-    const getName = () => {
-        sendGet(`chatroom/${roomId}`)
-        .then((data) => {
-            setRoomName(data.name);
-        })
-        .catch((error) => {
-            setIsError(true);
-            console.log(error);
-        });
-    }
-
-    const getMessages = () => {
-        sendGet(`chatroom/${roomId}/messages`)
-        .then((data) => {
-            if (data.length) {
-                setMessages(data);
-                setLastMessage(data[data.length - 1].id)
-            }
-        })
-        .catch((error) => {
-            setIsError(true);
-            console.log(error);
-        });
-    }
-
-    const enterRoom = () => {
-        sendPost(`chatroom/${roomId}/users`)
-        .then((data) => {       
-            getMessages();
-        })
-        .catch((error) => {
-            setIsError(true);
-            console.log(error);
-        });
-    }
-
     const leaveRoom = () => {
-        sendDelete(`chatroom/${roomId}/users`)
-        .catch((error) => {
-            setIsError(true);
-            console.log(error);
-        });
-
         navigate('/');
     }
 
@@ -69,36 +24,23 @@ export function Room() {
         if (trimMessage.length === 0) {
             return;
         }
-        sendPost(`chatroom/${roomId}/messages`, {text: trimMessage})
-        .then(() => updateMessages())
-        .catch((error) => {
-            setIsError(true);
-            console.log(error);
-        });
+        webscoket.send(trimMessage)
 
-        setNewMessage('')
         event.target.value = ''
     }
 
-    const updateMessages = () => {
-        sendGet(`chatroom/${roomId}/messages` + '?lastMessage=' + lastMessage)
-        .then((data) => {
-            if (data) {
-                setMessages(messages.concat(data));
-                setLastMessage(data[data.length - 1].id)
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
 
     useEffect(() => {
-        getName();
-        enterRoom();
+        if (!webscoket){
+            let ws = connectWebsocket(`chatroom/${roomName}/ws`);
 
-        const interval = setInterval(() => updateMessages(), 2000);
-        return () => clearInterval(interval);
+            ws.onmessage = (recieved) => {
+                setMessages((messages) => [...messages, JSON.parse(recieved.data)]);
+            };
+
+            setWebsocket(ws)
+        }
+
     }, []);
 
     return (
@@ -122,11 +64,10 @@ export function Room() {
                     lineHeight: 1.5,
                     overflowY: 'auto',
                 }}>
-                    {isError && <div>Error fetching data.</div>}
                     {!messages.length && <div style={{color: 'gray'}}>You can be first here!</div>}
                     {messages && messages.map((item, index) => (
                         <div key={index}>
-                            <span style={{fontWeight: 'bold'}}>{item.user}</span>: {item.text}
+                            <span style={{fontWeight: 'bold'}}>{item.user}</span>: {item.data}
                         </div>
                     ))}
                 </div>

@@ -27,7 +27,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<RequireAuth> <Chatrooms /> </RequireAuth>} />
         <Route path="/create" element={<RequireAuth> <CreateChatroom /> </RequireAuth>} />
-        <Route path="/room/:roomId" element={<RequireAuth> <Room /> </RequireAuth>} />
+        <Route path="/room/:roomName" element={<RequireAuth> <Room /> </RequireAuth>} />
       </Routes>
     </Router>
   );
